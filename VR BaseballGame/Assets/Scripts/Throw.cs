@@ -25,7 +25,7 @@ public class Throw : MonoBehaviour
           
             animator.SetBool("Throwing", false);
             gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-            Vector3 vector3 = new Vector3(-1, 1, -37);
+            Vector3 vector3 = new Vector3(-1, 0.44f, -37);
             gameObject.transform.position = vector3;
         }
     }
