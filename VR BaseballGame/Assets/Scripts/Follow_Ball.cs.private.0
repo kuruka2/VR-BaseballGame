@@ -1,0 +1,89 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+public class Follow_Ball : MonoBehaviour
+{
+    private Animator animator;
+    public Baseball_height height_on;
+
+    Follow_Ball follow_Ball;
+    NavMeshAgent nav;
+    Transform target;
+    Quaternion thistr;
+    Transform Target;
+    Vector3 rotation;
+    Vector3 point;
+    
+
+    // Start is called before the first frame update
+
+    public void OnEnable()
+    {
+        animator = GetComponent<Animator>();
+        animator.SetBool("Run", true);
+               
+        nav = GetComponent<NavMeshAgent>();
+
+        target = GameObject.Find("target").GetComponent<Transform>();
+
+        height_on.enabled = true; // 공 높이랑 위치 가져오기.
+
+        thistr = gameObject.transform.rotation;
+
+        point = gameObject.transform.position;
+    }
+
+    public void OnDisable()
+    {
+        this.nav.isStopped = true;  // 오브젝트 미끄러짐 멈춤 
+        this.nav.velocity = Vector3.zero;   // velocity가 zero로 될때까지 미끄러지기 때문에 바로 zero로 바꿔줌.
+        nav.ResetPath();
+        //animator.SetBool("flyball", false);
+        animator.SetBool("stay", false);
+        animator.SetBool("Run", false);
+        //animator.SetBool("groundball", false);
+
+        height_on.enabled = false;
+
+        gameObject.transform.position = point;
+        gameObject.transform.rotation = thistr;
+    }
+    public GameObject Baseball_transform(GameObject baseball)
+    {
+        Debug.Log(baseball);
+        return baseball;
+    }
+    // -0.214 -90.093 -0.024
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        //Debug.Log(gameObject.transform.position.z);
+        if (target == true)
+        {
+            nav.SetDestination(target.position);
+            if (gameObject.transform.position.z <= target.position.z+5 || gameObject.transform.position.z >= target.position.z + 5)
+            {
+                Debug.Log("성공");
+                animator.SetBool("stay", true); 
+                // 공 잡는 모션 
+                
+            }
+
+            //float distance = Vector3.Distance(gameObject.transform.position, target.position);
+            ////Debug.Log(distance);
+            //if (distance <= 3)
+            //{
+
+            //    //follow_Ball.enabled = false; // 공이 바닥에 떨어져 사라지는 코드가 있어 두번 적용돼 오류
+            //    animator.SetBool("flyball", true);
+
+            //}
+
+        }
+
+
+    }
+}
+
+
